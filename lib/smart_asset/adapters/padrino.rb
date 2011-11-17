@@ -13,4 +13,3 @@ class SmartAsset
 end
 
 Sinatra::Base.send(:include, SmartAsset::Helper)
-p "ok"
