@@ -196,7 +196,7 @@ class SmartAsset
       
       if @envs.include?(@env.to_s)
         @cache[type][match] =
-          if result = Dir["#{dest}/#{"[^_]"*8}_#{match}.#{ext}", "#{dest}/package_#{match}.#{ext}"].first
+          if result = Dir["#{dest}/#{"[^_]"*8}_#{match}.#{ext}", "#{dest}/#{match}.#{ext}"].first
             [ result.gsub(@pub, '') ]
           else
             []
@@ -249,6 +249,6 @@ class SmartAsset
 end
 
 require "smart_asset/adapters/rails#{Rails.version[0..0]}" if defined?(Rails)
-require "smart_asset/adapters/sinatra" if defined?(Sinatra) && !defined?(Padrino)
-require "smart_asset/adapters/padrino" if defined?(Padrino)
+require "smart_asset/adapters/sinatra" if defined?(Sinatra) && !defined?(PADRINO_ENV)
+require "smart_asset/adapters/padrino" if defined?(PADRINO_ENV)
 require "smart_asset/adapters/stasis" if defined?(Stasis)
