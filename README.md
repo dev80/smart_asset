@@ -115,6 +115,9 @@ Below are the default values (excluding <code>asset\_host</code>):
 append_random:
   development: true
 
+#Append hash for pakages e.g 123123_application.js
+append_hash: true |false 
+
 # Asset host URL (defaults to ActionController::Base.asset_host or nil)
 asset_host:
   production: http://assets%d.mydomain.com

@@ -62,7 +62,7 @@ class SmartAsset
           hash = Digest::SHA1.hexdigest(timestamps.join)[0..7]
           
           # Package path
-          package = "#{dest}/#{hash}_#{package}.#{ext}"
+          package = @config['append_hash'] ? "#{dest}/#{hash}_#{package}.#{ext}" : "#{dest}/#{package}.#{ext}"
           
           # If package file exists
           if File.exists?(package)
@@ -130,6 +130,11 @@ class SmartAsset
       if @config['append_random'].nil?
         @config['append_random'] = {}
       end
+
+      if @config['append_hash'].nil?
+        @config['append_hash'] = true
+      end
+
       if @config['append_random'].is_a?(::Hash) && @config['append_random']['development'].nil?
         @config['append_random']['development'] = true
       end
@@ -190,7 +195,7 @@ class SmartAsset
       
       if @envs.include?(@env.to_s)
         @cache[type][match] =
-          if result = Dir["#{dest}/#{"[^_]"*8}_#{match}.#{ext}"].first
+          if result = Dir["#{dest}/#{"[^_]"*8}_#{match}.#{ext}", "#{dest}/package_#{match}.#{ext}"].first
             [ result.gsub(@pub, '') ]
           else
             []
