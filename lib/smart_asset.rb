@@ -29,6 +29,16 @@ class SmartAsset
       time_cache = {}
       
       FileUtils.mkdir_p dest
+
+      # Remove old/unused packages
+      (Dir["#{dest}/#{"[^_]"*8}_*.#{ext}"] - packages).each do |path|
+        FileUtils.rm path
+      end
+      
+      # Delete legacy files
+      Dir["#{dest}/*.yml", "#{dest}/#{"[0-9]"*14}_*.{css,js}", "#{dest}/package_*.{css,js}" ].each do |path|
+        FileUtils.rm path
+      end
       
       (@config[type] || {}).each do |package, files|
         next if ENV['PACKAGE'] && ENV['PACKAGE'] != package
@@ -110,15 +120,6 @@ class SmartAsset
         end
       end
       
-      # Remove old/unused packages
-      (Dir["#{dest}/#{"[^_]"*8}_*.#{ext}"] - packages).each do |path|
-        FileUtils.rm path
-      end
-      
-      # Delete legacy files
-      Dir["#{dest}/*.yml", "#{dest}/#{"[0-9]"*14}_*.{css,js}"].each do |path|
-        FileUtils.rm path
-      end
     end
     
     def load_config(root, relative_config=nil)
